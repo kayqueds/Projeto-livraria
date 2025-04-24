@@ -47,6 +47,16 @@ def cadastro():
     return render_template('telaCadastro.html', titulo='Cadastro de Usuário')
 
 
+
+
+@app.route('/login')
+def login():
+    return render_template('telaLogin.html', titulo='Login de Usuário')
+
+
+
+
+
 # rota para adicionar um novo usuário
 @app.route('/add_usuario', methods=['POST'])
 def add_usuario():
@@ -59,7 +69,7 @@ def add_usuario():
         db.session.add(novo_usuario)
         db.session.commit()
 
-        return redirect('/listaUsuarios')
+        return redirect('/login')
 
 if __name__ == '__main__':
     app.run(debug=True)

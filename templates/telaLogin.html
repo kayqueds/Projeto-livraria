@@ -1,8 +1,9 @@
-{% extends 'base.html'%}
-{% block title %}{{titulo}}{% endblock %}
+{% extends 'telaCadastro.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
 
 
- {% block content %}
+
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -12,20 +13,16 @@
                     <label>{{titulo}}</label>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/add_usuario">
+                    <form method="POST" action="/login">
                         <div class="mb-3">
-                            <label for="nome" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nome" name="nome" required>
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label for="senha" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="senha" name="senha" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        
+
                         <button type="submit" class="btn btn-danger">Enviar</button>
                     </form>
                 </div>
@@ -33,15 +30,5 @@
         </div>
     </div> 
 
+
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
