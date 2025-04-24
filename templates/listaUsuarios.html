@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Usuários{% endblock %}
+{% block content %}
+<div class="container">
+
+    <h2 class="mb-4 mt-4 text-center area-1">{{ titulo }}</h2>
+
+    <table class="table table-hover bordered table-striped w-15"> 
+        <thead class="table-dark">
+            <tr>
+                <th>RA</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>E-mail</th>
+                <th>👉👌</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for usuario in usuarios %}
+            <tr>
+                <td> {{ usuario.id_usuario }} </td>
+                <td> {{ usuario.nome_usuario }} </td>
+                <td> {{ usuario.senha_usuario }} </td>
+                <td> {{ usuario.email_usuario}} </td>
+                
+       
+                <td>    
+                    <a class="btn btn-primary btn-success" title="Editar usuário" href="#">Editar</a>
+
+              
+                    <a class="btn btn-primary btn-danger" title="Apagar usuário" href="#">Excluir</a>
+                </td>        
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

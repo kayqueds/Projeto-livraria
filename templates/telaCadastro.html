@@ -12,21 +12,21 @@
                     <label>{{titulo}}</label>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ url_for('home') }}">
-                        <div class="mb-3">
-                            <label for="cpf" class="form-label">CPF</label>
-                            <input type="text" class="form-control" id="cpf" name="cpf" required>
-                        </div>
+                    <form method="POST" action="/add_usuario">
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="nome" name="nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         
-                        <button type="submit" class="btn btn-danger">Enviar</button>
+                        <button onclick="cadastrar()" type="submit" class="btn btn-danger">Enviar</button>
                     </form>
                 </div>
             </div>

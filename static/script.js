@@ -16,3 +16,29 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }, 2000);
 });
+
+
+function cadastrar(){
+    let nome = document.getElementById("nome").value;
+    let senha = document.getElementById("senha").value;
+    let email = document.getElementById("email").value;
+
+    if (nome && senha && email) {
+        console.log("Cadastrado!")
+        alert(`Cadastro realizado com sucesso! Bem-vindo ${nome}`);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Erro!",
+            text: "Preencha todos os campos."
+        });
+        alert('oi')
+    }
+
+}
+
+
+
+  
+
+    
