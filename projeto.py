@@ -26,6 +26,19 @@ class Usuarios(db.Model):
         return "<Usuario %r>" % self.nome_usuario
 
 
+class Livros(db.Model):
+    id_livro = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nome_livro = db.Column(db.String(100), nullable=False)
+    autor_livro = db.Column(db.String(100), nullable=False)
+    ano_livro = db.Column(db.Integer, nullable=True)
+    imagem_livro = db.Column(db.String(300), nullable=True)
+
+    def __repr__(self):
+        return "<Livro %r>" % self.nome_livro
+
+
+
+# essa linha cria o banco e as tabelas
 with app.app_context():
     db.create_all()
 
@@ -54,7 +67,12 @@ def login():
     return render_template('telaLogin.html', titulo='Login de Usuário')
 
 
-
+generos = ['Fantasia ⚔', 'Romance 🤎', 'Terror 😱', 'Suspense 🦹‍♂️', 'Aventura 🧙‍♂️', 'Ficção Científica 🤖', 'Drama 😭', 'Comédia 🤡']
+# rota de cadastro de livros
+@app.route('/cadastroLivros')
+def cadastroLivros():
+    return render_template('cadastrarLivro.html', titulo='Cadastro de Livros'
+                           , icone = '📚', generos = generos)
 
 
 # rota para adicionar um novo usuário

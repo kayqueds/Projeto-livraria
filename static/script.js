@@ -39,6 +39,10 @@ function cadastrar(){
 
 
 
+// listas de genero
+
+let
+
   
 
     
