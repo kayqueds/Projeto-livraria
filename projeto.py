@@ -62,13 +62,14 @@ def login():
 def add_usuario():
     if request.method == 'POST':
         nome = request.form['nome']
-        senha = int(request.form['senha'])
+        senha = str(request.form['senha'])
         email = request.form['email']
 
         novo_usuario = Usuarios(nome_usuario=nome, senha_usuario=senha, email_usuario=email)
         db.session.add(novo_usuario)
         db.session.commit()
 
+        
         return redirect('/login')
 
 if __name__ == '__main__':
