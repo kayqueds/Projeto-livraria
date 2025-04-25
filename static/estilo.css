@@ -253,4 +253,24 @@ table{
   border-radius: 10%;
 }
 
+/* mostrar senha */
+#olho{
+  cursor: pointer;
+  margin-left: 80%;
+  margin-top: -32px; 
+  position: absolute;
+  width: 25px; 
+  height: 25px;
+  background: url('assets/olho.png');
+  background-size: cover;
+}
 
+#olho:hover{
+  transform: scale(1.1);
+  transition: 0.3s ease-out;
+}
+
+#olho.olho-fechado{
+  background: url('assets/hidden.png');
+  background-size: cover;
+}

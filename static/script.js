@@ -17,31 +17,59 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 2000);
 });
 
-
+// validação de cadastro
 function cadastrar(){
-    let nome = document.getElementById("nome").value;
-    let senha = document.getElementById("senha").value;
-    let email = document.getElementById("email").value;
+    let nome = document.getElementById("nome").value.trim();
+    let senha = document.getElementById("senha").value.trim();
+    let email = document.getElementById("email").value.trim();
 
-    if (nome && senha && email) {
-        console.log("Cadastrado!")
-        alert(`Cadastro realizado com sucesso! Bem-vindo ${nome}`);
-    } else {
+   
+    if (nome == "" || senha == "" || email == "") {
         Swal.fire({
             icon: "error",
             title: "Erro!",
             text: "Preencha todos os campos."
         });
-        alert('oi')
+    } 
+   
+    else if (senha.length < 6) {
+        Swal.fire({
+            icon: "error",
+            title: "Erro!",
+            text: "A senha deve ter pelo menos 6 caracteres."
+        });
+        
     }
-
+    else if (!email.includes("@") || !email.includes(".")) {
+        Swal.fire({
+            icon: "error",
+            title: "Erro!",
+            text: "Email inválido."
+        });
+        
+    } 
+    else {
+        Swal.fire({
+            icon: "success",
+            title: "Sucesso!",
+            text: "Cadastro realizado com sucesso."
+        });
+    }
 }
 
+let olho = document.getElementById("olho");
+let senha = document.querySelector("#senha");
+olho.addEventListener("click", function() {
+    if (senha.type === "password") {
+        senha.setAttribute("type", "text");
+        olho.classList.add("olho-fechado");
+        
+    } else {
+        senha.setAttribute('type', 'password');
+        olho.classList.remove("olho-fechado");
+    }
+});
 
-
-// listas de genero
-
-let
 
   
 
