@@ -36,11 +36,38 @@ class Livros(db.Model):
     def __repr__(self):
         return "<Livro %r>" % self.nome_livro
 
+# classe dos cards de livros
+class Terror(db.Model):
+    id_terror = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    titulo_terror = db.Column(db.String(100), nullable=False)
+    autor_terror = db.Column(db.String(100), nullable=False)
+    capa_terror = db.Column(db.String(250), nullable=True)
+
+    def __repr__(self):
+        return "<Terror %r>" % self.titulo_terror
+
+
+@app.route('/terror')
+def terror():
+    livros_terror = Terror.query.limit(5).all()
+    return render_template('terror.html', titulo='Livros de Terror', terror=livros_terror)
 
 
 # essa linha cria o banco e as tabelas
 with app.app_context():
     db.create_all()
+
+    livros_terror = [
+        Terror(titulo_terror="It", autor_terror="Stephen King", capa_terror="https://upload.wikimedia.org/wikipedia/pt/8/82/It_2017.jpg"),
+        Terror(titulo_terror="O Iluminado", autor_terror="Stephen King", capa_terror="https://www.planocritico.com/wp-content/uploads/2018/10/o_iluminado_1980_plano_critico.jpg"),
+        Terror(titulo_terror="A Volta do Parafuso", autor_terror="Henry James", capa_terror="https://m.media-amazon.com/images/I/51AKQKcfIIL._SY445_SX342_.jpg"),
+        Terror(titulo_terror="Drácula", autor_terror="Bram Stoker", capa_terror="https://m.media-amazon.com/images/I/61MgodE1s0L._AC_UF1000,1000_QL80_.jpg"),
+        Terror(titulo_terror="Frankenstein", autor_terror="Mary Shelley", capa_terror="https://cdl-static.s3-sa-east-1.amazonaws.com/blog/artigo/6739/images/frankenstein-edicao-bolso-de-luxo.jpg"),
+    ]
+    db.session.bulk_save_objects(livros_terror)
+    db.session.commit()
+
+
 
 
 @app.route('/', methods=['GET', 'POST'])
