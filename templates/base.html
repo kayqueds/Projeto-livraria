@@ -28,24 +28,37 @@
                 <img style="border-radius: 50%;" src="{{ url_for('static', filename='assets/logo.jpg') }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
                Dream Quill
               </a>
+              <!-- Botão de menu para celular-->
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
           
+
               <!-- Links -->
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('cadastro') }}">Cadastro</a>
-                  </li>
+          
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Cadastrar
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{url_for('cadastro')}}">Usuário <i class="bi bi-person-circle"></i></a></li>
+                      <li><a class="dropdown-item" href="{{url_for('cadastroLivros')}}">Livros <i class="bi bi-book"></i></a></li>
+                      </ul>
+                    </li>  
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Categorias
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Fantasia</a></li>
-                      <li><a class="dropdown-item" href="#">Romance</a></li>
-                      <li><a class="dropdown-item" href="{{url_for('terror')}}">Terror</a></li>
-                      <li><a class="dropdown-item" href="#">Suspense</a></li>
+                      <li><a class="dropdown-item" href="{{url_for('fantasia')}}">Fantasia<i style="margin-left: 20px;" class="bi bi-magic"></i></a></li>
+                      <li><a class="dropdown-item" href="#">Romance<i style="margin-left: 10px;" class="bi bi-arrow-through-heart"></i></a></li>
+                      <li><a class="dropdown-item" href="{{url_for('terror')}}">Terror<i style="margin-left: 38px;" class="bi bi-moon-stars"></i></a></li>
+                      <li><a class="dropdown-item" href="#">Ficção<i style="margin-left: 32px;" class="bi bi-robot"></i></a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Ver todas</a></li>
+                      <li><a class="dropdown-item" href="#">Ver todas<i style="margin-left: 13px;" class="bi bi-globe-americas"></i></a></li>
                     </ul>
                   </li>
 

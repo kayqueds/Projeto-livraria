@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4 area-1">{{ titulo }}</h2>
+    <div class="row">
+        {% for livro in livros %}
+        <div class="col-md-5 text-center">
+            <div class="card mb-4 shadow-sm">
+                <img src="{{ url_for('static', filename='uploads/' + livro.imagem_livro) }}" class="card-img-top imgLivro" alt="Imagem do Livro">
+                <div class="card-body">
+                  
+                    <h6 class="card-title area-1">{{ livro.nome_livro }}</h6>
+                    <p class="card-text"><strong>Autor:</strong> {{ livro.autor_livro }}</p>
+                    <p class="card-text"><strong>Gênero:</strong> {{ livro.genero_livro }}</p>
+                    <p class="card-text"><strong>Ano:</strong> {{ livro.ano_livro }}</p>
+                    <p class="card-text">{{ livro.descricao_livro }}</p>
+                    <a onclick="confirmarExclusao(event)" class="btn btn-danger" href="{{url_for('excluir_livro', id=livro.id_livro)}}">Excluir<i class="bi bi-trash"></i></a>
+                    <a onclick="confirmarEdicao(event)" class="btn btn-success" href="{{ url_for('editar_livro', id=livro.id_livro) }}">Editar<i class="bi bi-pencil-square"></i></a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <p class="text-center">Nenhum livro cadastrado ainda!</p>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}
