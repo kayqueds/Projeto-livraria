@@ -1,0 +1,71 @@
+{% extends 'base.html'%}
+{% block title %}{{titulo}}{% endblock %}
+
+
+ {% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header text-center">
+                    <label>{{titulo}} {{icone}}</label>
+                </div>
+                <div class="card-body">
+                    <form action="/cadastroLivros" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="nome_livro" class="form-label">Livro</label>
+                            <input placeholder="Nome do livro" type="text" class="form-control" id="nome" name="nome_livro" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="autor_livro" class="form-label">Autor</label>
+                            <input placeholder="Nome do autor" type="text" class="form-control" id="senha" name="autor_livro" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="genero_livro" class="form-label">Gênero</label>
+                           <select name="genero_livro" id="">
+                                {% for genero in generos %}
+                                    <option value="{{genero}}">{{genero}}</option>
+                                {% endfor %}
+                           </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="ano_livro" class="form-label">Ano</label>
+                            <select name="ano_livro" id="">
+                                {% for i in range(1999, 2026) %}
+                                    <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descricao_livro" class="form-label">Descrição</label>
+                           <textarea class="form-control" name="descricao_livro" id="descricao_livro"></textarea>
+                        </div>
+                        
+
+                        <div class="mb-3">
+                            <label for="imagem_livro" class="form-label">Anexar livro</label>
+                            <input type="file" class="form-control" id="email" name="imagem_livro" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-danger">Cadastrar Livro</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

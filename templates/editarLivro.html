@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header text-center">
+                    <label>{{ titulo }} {{ icone }}</label>
+                </div>
+                <div class="card-body">
+                    <form action="/atualizar_livro" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="id_livro" value="{{ livro.id_livro }}">
+                        
+                        <div class="mb-3">
+                            <label for="nome_livro" class="form-label">Livro</label>
+                            <input placeholder="Nome do livro" type="text" class="form-control" id="nome" name="nome_livro" value="{{ livro.nome_livro }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="autor_livro" class="form-label">Autor</label>
+                            <input placeholder="Nome do autor" type="text" class="form-control" id="autor" name="autor_livro" value="{{ livro.autor_livro }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="genero_livro" class="form-label">Gênero</label>
+                            <select name="genero_livro" class="form-select" required>
+                                {% for genero in generos %}
+                                    <option value="{{ genero }}" {% if genero == livro.genero_livro %}selected{% endif %}>{{ genero }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ano_livro" class="form-label">Ano</label>
+                            <select name="ano_livro" class="form-select" required>
+                                {% for i in range(1999, 2026) %}
+                                    <option value="{{ i }}" {% if i == livro.ano_livro %}selected{% endif %}>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descricao_livro" class="form-label">Descrição</label>
+                            <textarea class="form-control" name="descricao_livro" id="descricao_livro" required>{{ livro.descricao_livro }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="imagem_livro" class="form-label">Atualizar capa (opcional)</label>
+                            <input type="file" class="form-control" id="imagem_livro" name="imagem_livro">
+                            {% if livro.imagem_livro %}
+                                <small>Imagem atual:</small><br>
+                                <img src="{{ url_for('static', filename='uploads/' ~ livro.imagem_livro) }}" alt="Capa do livro" style="max-height: 200px;">
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Atualizar Livro</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+{% endblock %}

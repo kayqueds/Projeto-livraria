@@ -253,4 +253,55 @@ table{
   border-radius: 10%;
 }
 
+/* mostrar senha */
+#olho{
+  cursor: pointer;
+  margin-left: 80%;
+  margin-top: -32px; 
+  position: absolute;
+  width: 25px; 
+  height: 25px;
+  background-size: cover;
+}
 
+
+
+#olho.olho-fechado{
+  background: url('<i class="bi bi-eye-slash"></i>');
+  background-size: cover;
+}
+
+
+/* estilo da imagem 404 */
+
+
+
+@keyframes mover {
+  0%{
+    transform: translateX(0px);
+  }
+  50%{
+    transform: translateX(150px);
+  }
+  100%{
+    transform: translateX(-150px);
+  }
+}
+
+
+.paginaNaoExiste{
+  max-width: 800px;
+  animation: mover;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-delay: 1s
+}
+
+
+.imgLivro{
+  width: 98%;
+  height: 200px;
+  border-radius: 8px;
+  border: 5px double var(--cor_primaria);
+
+}
