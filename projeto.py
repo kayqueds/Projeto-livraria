@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from models import db, Usuarios, Livros, Terror, Fantasia  # importa as classes do models.py
 import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.secret_key = "livraria"
 
 # Configurações do upload
 UPLOAD_FOLDER = 'static/uploads'
@@ -64,6 +65,8 @@ def home():
 
 @app.route('/listaUsuarios')
 def listaUsuarios():
+    if 'usuario_logado' not in session or session['usuario_logado'] is None:
+        return redirect('/cadastro')
     usuarios_cadastrados = Usuarios.query.order_by(Usuarios.id_usuario)
     return render_template('listaUsuarios.html',
                            titulo='Lista de Usuários', usuarios=usuarios_cadastrados)
@@ -78,9 +81,26 @@ def login():
 
 generos = ['Fantasia ⚔', 'Romance 🤎', 'Terror 😱', 'Suspense 🦹‍♂️', 'Aventura 🧙‍♂️', 'Ficção Científica 🤖', 'Drama 😭', 'Comédia 🤡']
 
+# rota de autenticar usuario
+@app.route('/autenticar', methods=['POST'])
+def autenticar_usuario():
+    email = request.form['txtLogin']
+    senha = request.form['txtSenha']
+
+    # Buscar o usuário pelo email no banco de dados
+    usuario = Usuarios.query.filter_by(email_usuario=email).first()
+
+    if usuario and usuario.senha_usuario == senha:
+        session['usuario_logado'] = usuario.email_usuario
+        return redirect('/')
+    else:
+        return redirect('/login')
+
 # rota de cadastro de livros
 @app.route('/cadastroLivros', methods=['GET', 'POST'])
 def cadastroLivros():
+    if 'usuario_logado' not in session or session['usuario_logado'] is None:
+        return redirect('/cadastro')
     if request.method == 'POST':
         nome_livro = request.form['nome_livro']
         autor_livro = request.form['autor_livro']
@@ -114,6 +134,8 @@ def cadastroLivros():
 
 @app.route('/livros')
 def listar_livros():
+    if 'usuario_logado' not in session or session['usuario_logado'] is None:
+        return redirect('/cadastro')
     livros = Livros.query.all()  # Busca todos os livros
     return render_template('livros.html', titulo='Meus Livros', livros=livros)
 
@@ -122,22 +144,6 @@ def listar_livros():
 @app.errorhandler(404)
 def paginaNaoExiste(e):
     return render_template('erro.html', titulo="Página não existe")
-
-
-
-# rota para adicionar um novo usuário
-@app.route('/add_usuario', methods=['POST'])
-def add_usuario():
-    if request.method == 'POST':
-        nome = request.form['nome']
-        senha = request.form['senha']
-        email = request.form['email']
-
-        novo_usuario = Usuarios(nome_usuario=nome, senha_usuario=senha, email_usuario=email)
-        db.session.add(novo_usuario)
-        db.session.commit()
-
-        return redirect('/login')
 
 
 
@@ -185,7 +191,20 @@ def atualizar_livro():
 
     return redirect('/livros')
 
+@app.route('/add_usuario', methods=['POST'])
+def add_usuario():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        senha = request.form['senha']
+        email = request.form['email']
 
+        # Criar o novo usuário no banco de dados
+        novo_usuario = Usuarios(nome_usuario=nome, senha_usuario=senha, email_usuario=email)
+        db.session.add(novo_usuario)
+        db.session.commit()
+
+        # Redirecionar para a tela de login
+        return redirect('/login') 
 
 if __name__ == '__main__':
     app.run(debug=True)

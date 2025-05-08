@@ -305,3 +305,7 @@ table{
   border: 5px double var(--cor_primaria);
 
 }
+
+.icones{
+  margin-left: 5px;
+}
