@@ -100,6 +100,26 @@ function cadastrar(){
     }
 }
 
+function logout(event){
+     event.preventDefault();
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você não poderá desfazer isso!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, sair!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: "Logout realizado com sucesso."
+            });
+            window.location.href = "/logout";
+        }
+    });
+}
 
 // ocultar e mostrar senha
 let olho = document.getElementById("olho");

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from models import db, Usuarios, Livros, Terror, Fantasia  # importa as classes do models.py
 import os
 from werkzeug.utils import secure_filename
@@ -66,7 +66,7 @@ def home():
 @app.route('/listaUsuarios')
 def listaUsuarios():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
-        return redirect('/cadastro')
+        return redirect('/login')
     usuarios_cadastrados = Usuarios.query.order_by(Usuarios.id_usuario)
     return render_template('listaUsuarios.html',
                            titulo='Lista de Usuários', usuarios=usuarios_cadastrados)
@@ -81,62 +81,84 @@ def login():
 
 generos = ['Fantasia ⚔', 'Romance 🤎', 'Terror 😱', 'Suspense 🦹‍♂️', 'Aventura 🧙‍♂️', 'Ficção Científica 🤖', 'Drama 😭', 'Comédia 🤡']
 
+
+
+# rota de logout
+@app.route('/logout') 
+def logout():
+    session.pop('usuario_logado', None)
+    flash('Logout realizado com sucesso!', 'sucesso')
+    return redirect('/login')  
+
 # rota de autenticar usuario
 @app.route('/autenticar', methods=['POST'])
 def autenticar_usuario():
-    email = request.form['txtLogin']
-    senha = request.form['txtSenha']
+    email = request.form.get('txtLogin', '').strip()
+    senha = request.form.get('txtSenha', '').strip()
 
-    # Buscar o usuário pelo email no banco de dados
     usuario = Usuarios.query.filter_by(email_usuario=email).first()
 
     if usuario and usuario.senha_usuario == senha:
         session['usuario_logado'] = usuario.email_usuario
+        flash('Login realizado com sucesso!', 'sucesso') 
+        print('Usuário logado:', session.get('usuario_logado'))
         return redirect('/')
     else:
+        flash('Usuário ou senha inválidos', 'erro')
         return redirect('/login')
 
-# rota de cadastro de livros
 @app.route('/cadastroLivros', methods=['GET', 'POST'])
 def cadastroLivros():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
-        return redirect('/cadastro')
+        return redirect('/login')
+
     if request.method == 'POST':
         nome_livro = request.form['nome_livro']
         autor_livro = request.form['autor_livro']
         genero_livro = request.form['genero_livro']
         ano_livro = request.form['ano_livro']
         descricao_livro = request.form['descricao_livro']
-        imagem_livro = request.files['imagem_livro'] 
+        imagem_livro = request.files['imagem_livro']
 
         # Salva a imagem na pasta uploads
         nome_arquivo = secure_filename(imagem_livro.filename)
         caminho_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], nome_arquivo)
         imagem_livro.save(caminho_arquivo)
 
-        # Cria o novo livro
+        # Obter o usuário logado
+        usuario_logado = session['usuario_logado']
+        usuario = Usuarios.query.filter_by(email_usuario=usuario_logado).first()
+
+        # Cria o novo livro associado ao usuário logado
         novo_livro = Livros(
             nome_livro=nome_livro,
             autor_livro=autor_livro,
             genero_livro=genero_livro,
             descricao_livro=descricao_livro,
             ano_livro=int(ano_livro),
-            imagem_livro=nome_arquivo  # Salva apenas o nome no banco de dados
+            imagem_livro=nome_arquivo,
+            usuario_id=usuario.id_usuario
         )
 
         db.session.add(novo_livro)
         db.session.commit()
 
-        return redirect('/livros')  # Depois de cadastrar, redireciona para ver os livros
+        return redirect('/livros')
 
-    return render_template('cadastrarLivro.html', titulo='Cadastro de Livros',
-        icone='📚', generos=generos)
+    return render_template('cadastrarLivro.html', titulo='Cadastro de Livros', icone='📚', generos=generos)
+
 
 @app.route('/livros')
 def listar_livros():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
-        return redirect('/cadastro')
-    livros = Livros.query.all()  # Busca todos os livros
+        return redirect('/login')
+
+    # Obter o usuário logado
+    usuario_logado = session['usuario_logado']
+
+    # Buscar apenas os livros cadastrados pelo usuário logado
+    livros = Livros.query.filter_by(usuario_id=usuario_logado).all()
+
     return render_template('livros.html', titulo='Meus Livros', livros=livros)
 
 
