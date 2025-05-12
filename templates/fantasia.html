@@ -13,11 +13,13 @@
     {% for livro in fantasia %}
    
     <div style="width: 400px;" class="card mb-5" style="width: 18rem;">
-        <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" src="{{ livro.capa_fantasia }}" class="card-img-top" alt="Capa de {{ livro.titulo_terror }}">
+        <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" src="{{ livro.capa_fantasia }}" class="card-img-top" alt="Capa de {{ livro.titulo_fantasia }}">
         <div class="card-body">
             <h5 class="card-title area-1">{{ livro.titulo_fantasia }}</h5>
             <p class="card-text">{{ livro.autor_fantasia }}</p>
-            <a href="#" onclick="adicionarFavoritos()" class="btn btn-danger botao-favorito">Favoritar</a>
+             <form action="{{ url_for('favoritar', id_livro=livro.id_fantasia) }}" method="POST">
+                <button onclick="favoritar(event)" type="submit" class="btn btn-danger botao-favorito">Favoritar</button>
+            </form>
         </div>
     </div>
     {% endfor %}

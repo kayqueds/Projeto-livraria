@@ -19,6 +19,7 @@ class Livros(db.Model):
     ano_livro = db.Column(db.Integer, nullable=False)
     descricao_livro = db.Column(db.Text)
     imagem_livro = db.Column(db.String(300), nullable=True)
+    favorito = db.Column(db.Boolean, default=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id_usuario'), nullable=False)
 
     usuario = db.relationship('Usuarios', backref=db.backref('livros', lazy=True))
@@ -43,3 +44,14 @@ class Fantasia(db.Model):
 
     def __repr__(self):
         return "<Fantasia %r>" % self.titulo_fantasia
+
+
+
+class Romance(db.Model):
+    id_romance= db.Column(db.Integer, primary_key=True, autoincrement=True)
+    titulo_romance = db.Column(db.String(100), nullable=False)
+    autor_romance = db.Column(db.String(100), nullable=False)
+    capa_romance = db.Column(db.String(250), nullable=True)
+
+    def __repr__(self):
+        return "<Romance %r>" % self.titulo_romance

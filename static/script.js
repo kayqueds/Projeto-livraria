@@ -136,35 +136,27 @@ olho.addEventListener("click", function() {
 });
 
 // adicionar favoritos
-function adicionarFavoritos(){
-    let btnFavoritar = document.querySelectorAll(".botao-favorito");
-    btnFavoritar.forEach(function(btn) {
-    btn.classList.toggle("favorito");
-    if (btn.classList.contains("favorito")) {
-        btn.innerHTML = "Remover dos Favoritos ";
-        btn.style.backgroundColor = "#ff0000"; // vermelho
-        btn.innerHTML += '<i class="bi bi-trash"></i>';
-        Swal.fire({
-            icon: "success",
-            title: "Sucesso!",
-            text: "Adicionado aos favoritos."
-        });
-    }
-    else {
-        btn.innerHTML = "Adicionar aos Favoritos ";
-        btn.style.backgroundColor = "#007bff"; // azul
-        btn.innerHTML += '<i class="bi bi-star"></i>';
-       
-
-        Swal.fire({
-            icon: "success",
-            title: "Sucesso!",
-            text: "Removido dos favoritos."
-        });
-    }
-});
-
-
+function favoritar(event){
+      event.preventDefault();
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você deseja favoritar!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Favoritar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: "Livro adicionado aos favoritos."
+            });
+            window.location.href = "/favoritos";
+        }
+    });
 }
+
+
 
 

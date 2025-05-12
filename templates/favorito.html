@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-3 mt-4 text-center area-1">{{ titulo }}</h2>
+
+<div class="container d-flex flex-wrap justify-content-center gap-3 mt-5 text-center">
+
+    {% if livros %}
+        {% for livro in livros %}
+        <div style="width: 400px;" class="card mb-5" style="width: 18rem;">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" 
+                src="{{ livro.imagem_livro }}" alt="Capa de {{ livro.nome_livro }}" class="card-img-top" alt="Capa de {{ livro.nome_livro }}">
+            <div class="card-body">
+                <h5 class="card-title area-1">{{ livro.nome_livro }}</h5>
+                <p class="card-text">{{ livro.autor_livro }}</p>
+                 <a onclick="confirmarExclusao(event)" class="btn btn-danger" href="{{url_for('excluir_livro_favorito', id=livro.id_livro)}}">Excluir<i class="bi bi-trash"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Você ainda não favoritou nenhum livro.</p>
+    {% endif %}
+
+</div>
+{% endblock %}

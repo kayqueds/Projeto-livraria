@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, session, flash
-from models import db, Usuarios, Livros, Terror, Fantasia  # importa as classes do models.py
+from flask import Flask, render_template, request, redirect, session, flash, url_for
+from models import db, Usuarios, Livros, Terror, Fantasia, Romance  # importa as classes do models.py
 import os
 from werkzeug.utils import secure_filename
 
@@ -25,13 +25,20 @@ db.init_app(app)
 
 @app.route('/terror')
 def terror():
-    livros_terror = Terror.query.limit(5).all()
+    livros_terror = Terror.query.limit(3).all()
     return render_template('terror.html', titulo='Livros de Terror', terror=livros_terror)
 
 @app.route('/fantasia')
 def fantasia():
     livros_fantasia = Fantasia.query.limit(3).all()
     return render_template('fantasia.html', titulo='Livros de Fantasia', fantasia=livros_fantasia)
+
+
+@app.route('/romance')
+def romance():
+    livros_romance = Romance.query.limit(3).all()
+    return render_template('romance.html', titulo='Livros de Romance', romance=livros_romance)
+
 
 # essa linha cria o banco e as tabelas
 with app.app_context():
@@ -41,21 +48,30 @@ with app.app_context():
         Terror(titulo_terror="It", autor_terror="Stephen King", capa_terror="https://upload.wikimedia.org/wikipedia/pt/8/82/It_2017.jpg"),
         Terror(titulo_terror="O Iluminado", autor_terror="Stephen King", capa_terror="https://www.planocritico.com/wp-content/uploads/2018/10/o_iluminado_1980_plano_critico.jpg"),
         Terror(titulo_terror="A Volta do Parafuso", autor_terror="Henry James", capa_terror="https://m.media-amazon.com/images/I/51AKQKcfIIL._SY445_SX342_.jpg"),
-        Terror(titulo_terror="Drácula", autor_terror="Bram Stoker", capa_terror="https://m.media-amazon.com/images/I/61MgodE1s0L._AC_UF1000,1000_QL80_.jpg"),
-        Terror(titulo_terror="Frankenstein", autor_terror="Mary Shelley", capa_terror="https://cdl-static.s3-sa-east-1.amazonaws.com/blog/artigo/6739/images/frankenstein-edicao-bolso-de-luxo.jpg"),
     ]
     db.session.bulk_save_objects(livros_terror)
     db.session.commit()
 
     livros_fantasia = [
         Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg"),
-        Fantasia(titulo_fantasia="Viagem ao centro da terra", autor_fantasia="Júlio Verne", capa_fantasia="https://m.media-amazon.com/images/I/71g8eE8d8QL._AC_UF1000,1000_QL80_.jpg"),
-        Fantasia(titulo_fantasia="O Nome do Vento", autor_fantasia="Patrick Rothfuss", capa_fantasia="https://m.media-amazon.com/images/I/81yWqSBM+5L._AC_UF1000,1000_QL80_.jpg"),
+       Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg"),
+        Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg"),
+
     ]
 
     db.session.bulk_save_objects(livros_fantasia)
     db.session.commit()
 
+
+    livros_romance= [
+        Romance(titulo_romance="Rei da ira ", autor_romance="Ana Huang", capa_romance="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1697407049i/199833928.jpg"),
+        Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://th.bing.com/th/id/OIP.SaEmOlYa5mX83MrHPFaMVwHaJ4?cb=iwc2&rs=1&pid=ImgDetMain"),
+        Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://jamboeditora.com.br/wp-content/uploads/2020/09/jamboeditora-ladraoderaios.png"),
+    ]
+
+    db.session.bulk_save_objects(livros_romance)
+
+    db.session.commit()
 # rotas da aplicação
 
 # rota inicial
@@ -178,6 +194,32 @@ def excluir_livro(id):
    db.session.commit()
    return redirect('/livros')    
 
+
+@app.route('/excluir_livro_favorito/<int:id>')
+def excluir_livro_favorito(id):
+    if 'usuario_logado' not in session or session['usuario_logado'] is None:
+        return redirect('/login')
+    Livros.query.filter_by(id_livro=id).delete()
+    db.session.commit()
+    return redirect('/favoritos')
+@app.route('/favoritar/<int:id_livro>', methods=['POST'])
+def favoritar(id_livro):
+    if 'usuario_logado' not in session or session['usuario_logado'] is None:
+        return redirect('/login')
+    livro = Livros.query.get(id_livro)
+    if livro:
+        livro.favorito = not livro.favorito
+        db.session.commit()
+        print(f"Livro '{livro.nome_livro}' favoritado: {livro.favorito}")
+    return redirect(url_for('favoritos'))
+
+
+@app.route('/favoritos')
+def favoritos():
+    if 'usuario_logado' not in session or session['usuario_logado'] is None:
+        return redirect('/login')
+    livros_favoritos = Livros.query.filter_by(favorito=True).all()
+    return render_template('favorito.html', livros=livros_favoritos, titulo="Livros Favoritos")
 
 
 # adicionando rota para editar livro
