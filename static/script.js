@@ -49,11 +49,11 @@ function confirmarEdicao(event) {
         confirmButtonText: 'Sim, editar!',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
-        if (result.isConfirmed) {
+        if (result.isConfirmed) {   
             Swal.fire({
                 icon: "success",
                 title: "Sucesso!",
-                text: "Cadastro realizado com sucesso."
+                text: `Livro editado com sucesso.`
             });
             window.location.href = event.target.href;
         }

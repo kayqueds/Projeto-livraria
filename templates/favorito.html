@@ -15,7 +15,7 @@
             <div class="card-body">
                 <h5 class="card-title area-1">{{ livro.nome_livro }}</h5>
                 <p class="card-text">{{ livro.autor_livro }}</p>
-                 <a onclick="confirmarExclusao(event)" class="btn btn-danger" href="{{url_for('excluir_livro_favorito', id=livro.id_livro)}}">Excluir<i class="bi bi-trash"></i></a>
+                 <a onclick="confirmarExclusao(event)" class="btn btn-danger" href="{{url_for('excluir_livro', id=livro.id_livro)}}">Excluir<i class="bi bi-trash"></i></a>
             </div>
         </div>
         {% endfor %}

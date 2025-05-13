@@ -4,7 +4,9 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4 area-1">{{ titulo }}</h2>
+    
     <div class="row">
+        <a href="{{ url_for('cadastroLivros') }}" class="btn btn-danger mb-4">Cadastrar Livro</a>
         {% for livro in livros %}
         <div class="col-md-5 text-center">
             <div class="card mb-4 shadow-sm">
@@ -17,7 +19,8 @@
                     <p class="card-text"><strong>Ano:</strong> {{ livro.ano_livro }}</p>
                     <p class="card-text">{{ livro.descricao_livro }}</p>
                     <a onclick="confirmarExclusao(event)" class="btn btn-danger" href="{{url_for('excluir_livro', id=livro.id_livro)}}">Excluir<i class="bi bi-trash"></i></a>
-                    <a onclick="confirmarEdicao(event)" class="btn btn-success" href="{{ url_for('editar_livro', id=livro.id_livro) }}">Editar<i class="bi bi-pencil-square"></i></a>
+                    <a class="btn btn-success" href="{{ url_for('editar_livro', id=livro.id_livro) }}">Editar<i class="bi bi-pencil-square"></i></a>
+
                 </div>
             </div>
         </div>

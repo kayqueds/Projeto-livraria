@@ -33,14 +33,12 @@ def fantasia():
     livros_fantasia = Fantasia.query.limit(3).all()
     return render_template('fantasia.html', titulo='Livros de Fantasia', fantasia=livros_fantasia)
 
-
 @app.route('/romance')
 def romance():
     livros_romance = Romance.query.limit(3).all()
     return render_template('romance.html', titulo='Livros de Romance', romance=livros_romance)
 
-
-# essa linha cria o banco e as tabelas
+# Criação das tabelas no banco de dados (caso ainda não existam)
 with app.app_context():
     db.create_all()
 
@@ -54,27 +52,22 @@ with app.app_context():
 
     livros_fantasia = [
         Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg"),
-       Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg"),
+        Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg"),
         Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg"),
-
     ]
-
     db.session.bulk_save_objects(livros_fantasia)
     db.session.commit()
 
-
-    livros_romance= [
+    livros_romance = [
         Romance(titulo_romance="Rei da ira ", autor_romance="Ana Huang", capa_romance="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1697407049i/199833928.jpg"),
         Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://th.bing.com/th/id/OIP.SaEmOlYa5mX83MrHPFaMVwHaJ4?cb=iwc2&rs=1&pid=ImgDetMain"),
         Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://jamboeditora.com.br/wp-content/uploads/2020/09/jamboeditora-ladraoderaios.png"),
     ]
-
     db.session.bulk_save_objects(livros_romance)
-
     db.session.commit()
-# rotas da aplicação
 
-# rota inicial
+# Rotas da aplicação
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('index.html', titulo='Página inicial')
@@ -84,12 +77,12 @@ def listaUsuarios():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
         return redirect('/login')
     usuarios_cadastrados = Usuarios.query.order_by(Usuarios.id_usuario)
-    return render_template('listaUsuarios.html',
-                           titulo='Lista de Usuários', usuarios=usuarios_cadastrados)
+    return render_template('listaUsuarios.html', titulo='Lista de Usuários', usuarios=usuarios_cadastrados)
 
 @app.route('/cadastro')
 def cadastro():
     return render_template('telaCadastro.html', titulo='Cadastro de Usuário')
+
 
 @app.route('/login')
 def login():
@@ -97,16 +90,13 @@ def login():
 
 generos = ['Fantasia ⚔', 'Romance 🤎', 'Terror 😱', 'Suspense 🦹‍♂️', 'Aventura 🧙‍♂️', 'Ficção Científica 🤖', 'Drama 😭', 'Comédia 🤡']
 
-
-
-# rota de logout
+# Rota de logout
 @app.route('/logout') 
 def logout():
     session.pop('usuario_logado', None)
-    flash('Logout realizado com sucesso!', 'sucesso')
     return redirect('/login')  
 
-# rota de autenticar usuario
+# Rota de autenticar usuario
 @app.route('/autenticar', methods=['POST'])
 def autenticar_usuario():
     email = request.form.get('txtLogin', '').strip()
@@ -116,11 +106,10 @@ def autenticar_usuario():
 
     if usuario and usuario.senha_usuario == senha:
         session['usuario_logado'] = usuario.email_usuario
-        flash('Login realizado com sucesso!', 'sucesso') 
-        print('Usuário logado:', session.get('usuario_logado'))
+        flash('Login realizado com sucesso!', 'success')
         return redirect('/')
     else:
-        flash('Usuário ou senha inválidos', 'erro')
+        flash('Usuário ou senha inválidos', 'alert')
         return redirect('/login')
 
 @app.route('/cadastroLivros', methods=['GET', 'POST'])
@@ -163,7 +152,6 @@ def cadastroLivros():
 
     return render_template('cadastrarLivro.html', titulo='Cadastro de Livros', icone='📚', generos=generos)
 
-
 @app.route('/livros')
 def listar_livros():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
@@ -171,48 +159,19 @@ def listar_livros():
 
     # Obter o usuário logado
     usuario_logado = session['usuario_logado']
+    usuario = Usuarios.query.filter_by(email_usuario=usuario_logado).first()
 
     # Buscar apenas os livros cadastrados pelo usuário logado
-    livros = Livros.query.filter_by(usuario_id=usuario_logado).all()
+    livros = Livros.query.filter_by(usuario_id=usuario.id_usuario).all()
 
     return render_template('livros.html', titulo='Meus Livros', livros=livros)
 
-
-
-@app.errorhandler(404)
-def paginaNaoExiste(e):
-    return render_template('erro.html', titulo="Página não existe")
-
-
-
 @app.route('/excluir_livro/<int:id>')  
 def excluir_livro(id):
-    
-   # a linha abaixo exclui o aluno
-   Livros.query.filter_by(id_livro = id).delete()
-
+   # Exclui o livro
+   Livros.query.filter_by(id_livro=id).delete()
    db.session.commit()
    return redirect('/livros')    
-
-
-@app.route('/excluir_livro_favorito/<int:id>')
-def excluir_livro_favorito(id):
-    if 'usuario_logado' not in session or session['usuario_logado'] is None:
-        return redirect('/login')
-    Livros.query.filter_by(id_livro=id).delete()
-    db.session.commit()
-    return redirect('/favoritos')
-@app.route('/favoritar/<int:id_livro>', methods=['POST'])
-def favoritar(id_livro):
-    if 'usuario_logado' not in session or session['usuario_logado'] is None:
-        return redirect('/login')
-    livro = Livros.query.get(id_livro)
-    if livro:
-        livro.favorito = not livro.favorito
-        db.session.commit()
-        print(f"Livro '{livro.nome_livro}' favoritado: {livro.favorito}")
-    return redirect(url_for('favoritos'))
-
 
 @app.route('/favoritos')
 def favoritos():
@@ -221,19 +180,20 @@ def favoritos():
     livros_favoritos = Livros.query.filter_by(favorito=True).all()
     return render_template('favorito.html', livros=livros_favoritos, titulo="Livros Favoritos")
 
+@app.route('/favoritar/<int:id_livro>', methods=['POST'])
+def favoritar(id_livro):
+    if 'usuario_logado' not in session or session['usuario_logado'] is None:
+        return redirect('/login')
+    livro = Livros.query.get(id_livro)
+    if livro:
+        livro.favorito = not livro.favorito
+        db.session.commit()
+    return redirect(url_for('favoritos'))
 
-# adicionando rota para editar livro
 @app.route('/editar_livro/<int:id>')
 def editar_livro(id):
     livro = Livros.query.get_or_404(id)
-    return render_template(
-        'editarLivro.html',
-        titulo='Editar livro',
-        icone='✏️',
-        livro=livro,
-        generos=generos
-    )
-
+    return render_template('editarLivro.html', titulo='Editar livro', icone='✏️', livro=livro, generos=generos)
 @app.route('/atualizar_livro', methods=['POST'])
 def atualizar_livro():
     livro_id = request.form['id_livro']
@@ -255,6 +215,7 @@ def atualizar_livro():
 
     return redirect('/livros')
 
+
 @app.route('/add_usuario', methods=['POST'])
 def add_usuario():
     if request.method == 'POST':
@@ -272,4 +233,3 @@ def add_usuario():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
