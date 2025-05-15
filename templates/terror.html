@@ -5,8 +5,10 @@
 {% block content %}
 
 <h2 class="mb-3 mt-4 text-center area-1">{{ titulo }}</h2>
-
-
+<!--Botão de ver favoritos-->
+<div class="text-center">
+    <a href="{{ url_for('favoritos') }}" target="_blank" class="btn btn-primary">Ver Favoritos</a>
+</div>    
 <div class="container d-flex flex-wrap justify-content-center gap-3 mt-5 text-center">
 
 
@@ -17,9 +19,15 @@
         <div class="card-body">
             <h5 class="card-title area-1">{{ livro.titulo_terror }}</h5>
             <p class="card-text">{{ livro.autor_terror }}</p>
-              <form action="{{ url_for('favoritar', id_livro=livro.id_terror) }}" method="POST">
-                <button onclick="favoritar(event)" type="submit" class="btn btn-danger botao-favorito">Favoritar</button>
-            </form>
+           <form action="{{ url_for('favoritar_terror', id=livro.id_terror) }}" method="POST">
+    <button type="submit">
+        {% if livro.favorito %}
+            ★ Remover dos favoritos
+        {% else %}
+            ☆ Adicionar aos favoritos
+        {% endif %}
+    </button>
+</form>
         </div>
     </div>
     {% endfor %}

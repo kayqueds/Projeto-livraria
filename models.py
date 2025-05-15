@@ -32,6 +32,7 @@ class Terror(db.Model):
     titulo_terror = db.Column(db.String(100), nullable=False)
     autor_terror = db.Column(db.String(100), nullable=False)
     capa_terror = db.Column(db.String(250), nullable=True)
+    favorito = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return "<Terror %r>" % self.titulo_terror

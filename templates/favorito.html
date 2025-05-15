@@ -7,19 +7,26 @@
 
 <div class="container d-flex flex-wrap justify-content-center gap-3 mt-5 text-center">
 
-    {% if livros %}
-        {% for livro in livros %}
-        <div style="width: 400px;" class="card mb-5" style="width: 18rem;">
-            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" 
-                src="{{ livro.imagem_livro }}" alt="Capa de {{ livro.nome_livro }}" class="card-img-top" alt="Capa de {{ livro.nome_livro }}">
-            <div class="card-body">
-                <h5 class="card-title area-1">{{ livro.nome_livro }}</h5>
-                <p class="card-text">{{ livro.autor_livro }}</p>
-                 <a onclick="confirmarExclusao(event)" class="btn btn-danger" href="{{url_for('excluir_livro', id=livro.id_livro)}}">Excluir<i class="bi bi-trash"></i></a>
+   {% if terror %}
+    <h3 class="mt-5 area-2">Terror 😱</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+        {% for livro in terror %}
+        <div style="width: 400px;" class="card mb-4">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
+                src="{{ livro.capa_terror }}" alt="Capa de {{ livro.titulo_terror }}">
+            <div class="card-body text-center">
+                <h5 class="card-title area-1">{{ livro.titulo_terror }}</h5>
+                <p class="card-text">{{ livro.autor_terror }}</p>
+                <form action="{{ url_for('favoritar_terror', id=livro.id_terror) }}" method="post">
+                    <button class="btn btn-warning" type="submit">
+                        Remover dos Favoritos ⭐
+                    </button>
+                </form>
             </div>
         </div>
         {% endfor %}
-    {% else %}
+    </div>
+       {% else %}
         <p>Você ainda não favoritou nenhum livro.</p>
     {% endif %}
 
