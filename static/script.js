@@ -136,21 +136,21 @@ olho.addEventListener("click", function() {
 });
 
 // adicionar favoritos
-function favoritar(event){
-      event.preventDefault();
+function desfavoritar(){
+   
     Swal.fire({
         title: 'Tem certeza?',
-        text: "Você deseja favoritar!",
+        text: "Você deseja desfavoritar!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Favoritar',
+        confirmButtonText: 'Desfavoritar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({
                 icon: "success",
                 title: "Sucesso!",
-                text: "Livro adicionado aos favoritos."
+                text: "Livro não favoritado!"
             });
             window.location.href = "/favoritos";
         }

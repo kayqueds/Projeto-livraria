@@ -43,25 +43,28 @@ with app.app_context():
     db.create_all()
 
     livros_terror = [
-        Terror(titulo_terror="It", autor_terror="Stephen King", capa_terror="https://upload.wikimedia.org/wikipedia/pt/8/82/It_2017.jpg"),
-        Terror(titulo_terror="O Iluminado", autor_terror="Stephen King", capa_terror="https://www.planocritico.com/wp-content/uploads/2018/10/o_iluminado_1980_plano_critico.jpg"),
-        Terror(titulo_terror="A Volta do Parafuso", autor_terror="Henry James", capa_terror="https://m.media-amazon.com/images/I/51AKQKcfIIL._SY445_SX342_.jpg"),
-    ]
+    Terror(titulo_terror="It", autor_terror="Stephen King",
+           capa_terror="https://upload.wikimedia.org/wikipedia/pt/8/82/It_2017.jpg", favorito=False),
+    Terror(titulo_terror="O Iluminado", autor_terror="Stephen King",
+           capa_terror="https://www.planocritico.com/wp-content/uploads/2018/10/o_iluminado_1980_plano_critico.jpg", favorito=False),
+    Terror(titulo_terror="A Volta do Parafuso", autor_terror="Henry James",
+           capa_terror="https://m.media-amazon.com/images/I/51AKQKcfIIL._SY445_SX342_.jpg", favorito=False),
+]
     db.session.bulk_save_objects(livros_terror)
     db.session.commit()
 
     livros_fantasia = [
-        Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg"),
-        Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg"),
-        Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg"),
+        Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg", favorito=False),
+        Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg", favorito=False),
+        Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg", favorito=False),
     ]
     db.session.bulk_save_objects(livros_fantasia)
     db.session.commit()
 
     livros_romance = [
-        Romance(titulo_romance="Rei da ira ", autor_romance="Ana Huang", capa_romance="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1697407049i/199833928.jpg"),
-        Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://th.bing.com/th/id/OIP.SaEmOlYa5mX83MrHPFaMVwHaJ4?cb=iwc2&rs=1&pid=ImgDetMain"),
-        Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://jamboeditora.com.br/wp-content/uploads/2020/09/jamboeditora-ladraoderaios.png"),
+        Romance(titulo_romance="Rei da ira ", autor_romance="Ana Huang", capa_romance="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1697407049i/199833928.jpg", favorito=False),
+        Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://th.bing.com/th/id/OIP.SaEmOlYa5mX83MrHPFaMVwHaJ4?cb=iwc2&rs=1&pid=ImgDetMain", favorito=False),
+        Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://cdn.record.com.br/wp-content/uploads/2021/08/25134546/21750-600x969.jpeg", favorito=False),
     ]
     db.session.bulk_save_objects(livros_romance)
     db.session.commit()
@@ -106,7 +109,7 @@ def autenticar_usuario():
 
     if usuario and usuario.senha_usuario == senha:
         session['usuario_logado'] = usuario.email_usuario
-        flash('Login realizado com sucesso!', 'success')
+        flash(f'Login realizado com sucesso, olá {usuario.nome_usuario}', 'success')
         return redirect('/')
     else:
         flash('Usuário ou senha inválidos', 'alert')
@@ -152,6 +155,8 @@ def cadastroLivros():
 
     return render_template('cadastrarLivro.html', titulo='Cadastro de Livros', icone='📚', generos=generos)
 
+
+
 @app.route('/livros')
 def listar_livros():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
@@ -177,18 +182,40 @@ def excluir_livro(id):
 def favoritos():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
         return redirect('/login')
-    livros_favoritos = Livros.query.filter_by(favorito=True).all()
-    return render_template('favorito.html', livros=livros_favoritos, titulo="Livros Favoritos")
 
-@app.route('/favoritar/<int:id_livro>', methods=['POST'])
-def favoritar(id_livro):
-    if 'usuario_logado' not in session or session['usuario_logado'] is None:
-        return redirect('/login')
-    livro = Livros.query.get(id_livro)
-    if livro:
-        livro.favorito = not livro.favorito
-        db.session.commit()
-    return redirect(url_for('favoritos'))
+    livros_terror = Terror.query.filter_by(favorito=True).all()
+    livros_fantasia = Fantasia.query.filter_by(favorito=True).all()
+    livros_romance = Romance.query.filter_by(favorito=True).all()
+    return render_template("favorito.html", terror=livros_terror, titulo='Livros Favoritos', icone='❤️'
+    , fantasia=livros_fantasia, romance=livros_romance)
+
+@app.route('/favoritar_terror/<int:id>', methods=['POST'])
+def favoritar_terror(id):
+    livro = Terror.query.get_or_404(id)
+    livro.favorito = not livro.favorito
+    db.session.commit()
+    print(f'Livro {livro.titulo_terror} - favorito: {livro.favorito}')  # debug
+    return redirect(url_for('terror'))
+
+
+
+@app.route('/favoritar_fantasia/<int:id>', methods=['POST'])
+def favoritar_fantasia(id):
+    livro = Fantasia.query.get_or_404(id)
+    livro.favorito = not livro.favorito
+    db.session.commit()
+    print(f'Livro {livro.titulo_fantasia} - favorito: {livro.favorito}')
+     # debug    
+    return redirect(url_for('fantasia'))
+
+@app.route('/favoritar_romance/<int:id>', methods=['POST'])
+def favoritar_romance(id):
+    livro = Romance.query.get_or_404(id)
+    livro.favorito = not livro.favorito
+    db.session.commit()
+    print(f'Livro {livro.titulo_romance} - favorito: {livro.favorito}')
+    return redirect(url_for('romance'))
+
 
 @app.route('/editar_livro/<int:id>')
 def editar_livro(id):
@@ -214,6 +241,11 @@ def atualizar_livro():
     db.session.commit()
 
     return redirect('/livros')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('erro.html', titulo='Página não encontrada')
 
 
 @app.route('/add_usuario', methods=['POST'])

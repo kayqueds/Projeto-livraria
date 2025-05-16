@@ -3,25 +3,89 @@
 {% block title %}{{ titulo }}{% endblock %}
 
 {% block content %}
+<div class="col-md-12 text-center">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-warning" role="alert">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+
 <h2 class="mb-3 mt-4 text-center area-1">{{ titulo }}</h2>
 
-<div class="container d-flex flex-wrap justify-content-center gap-3 mt-5 text-center">
+<div class="container d-flex flex-column gap-5 mt-5 text-center">
 
-    {% if livros %}
-        {% for livro in livros %}
-        <div style="width: 400px;" class="card mb-5" style="width: 18rem;">
-            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" 
-                src="{{ livro.imagem_livro }}" alt="Capa de {{ livro.nome_livro }}" class="card-img-top" alt="Capa de {{ livro.nome_livro }}">
-            <div class="card-body">
-                <h5 class="card-title area-1">{{ livro.nome_livro }}</h5>
-                <p class="card-text">{{ livro.autor_livro }}</p>
-                 <a onclick="confirmarExclusao(event)" class="btn btn-danger" href="{{url_for('excluir_livro', id=livro.id_livro)}}">Excluir<i class="bi bi-trash"></i></a>
+    {% if terror %}
+    <h3 class="area-2">Terror 😱</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        {% for livro in terror %}
+        <div style="width: 400px;" class="card mb-4">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
+                src="{{ livro.capa_terror }}" alt="Capa de {{ livro.titulo_terror }}">
+            <div class="card-body text-center">
+                <h5 class="card-title area-1">{{ livro.titulo_terror }}</h5>
+                <p class="card-text">{{ livro.autor_terror }}</p>
+                <form action="{{ url_for('favoritar_terror', id=livro.id_terror) }}" method="post">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+                </form>
             </div>
         </div>
         {% endfor %}
-    {% else %}
-        <p>Você ainda não favoritou nenhum livro.</p>
+    </div>
     {% endif %}
+
+    {% if fantasia %}
+    <h3 class="area-2">Fantasia ✨</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        {% for livro in fantasia %}
+        <div style="width: 400px;" class="card mb-4">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
+                src="{{ livro.capa_fantasia }}" alt="Capa de {{ livro.titulo_fantasia }}">
+            <div class="card-body text-center">
+                <h5 class="card-title area-1">{{ livro.titulo_fantasia }}</h5>
+                <p class="card-text">{{ livro.autor_fantasia }}</p>
+                <form action="{{ url_for('favoritar_fantasia', id=livro.id_fantasia) }}" method="post">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    {% if romance %}
+    <h3 class="area-2">Romance 💖</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        {% for livro in romance %}
+        <div style="width: 400px;" class="card mb-4">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
+                src="{{ livro.capa_romance }}" alt="Capa de {{ livro.titulo_romance }}">
+            <div class="card-body text-center">
+                <h5 class="card-title area-1">{{ livro.titulo_romance }}</h5>
+                <p class="card-text">{{ livro.autor_romance }}</p>
+                <form action="{{ url_for('favoritar_romance', id=livro.id_romance) }}" method="post">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}     
+
+    {% if not (terror or fantasia or romance) %}
+    <div class="alert alert-info" role="alert">
+        Você ainda não favoritou nenhum livro.
+    </div>
+{% endif %}
+
 
 </div>
 {% endblock %}
