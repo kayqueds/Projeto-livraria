@@ -3,13 +3,23 @@
 {% block title %}{{ titulo }}{% endblock %}
 
 {% block content %}
+<div class="col-md-12 text-center">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-warning" role="alert">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+
 <h2 class="mb-3 mt-4 text-center area-1">{{ titulo }}</h2>
 
-<div class="container d-flex flex-wrap justify-content-center gap-3 mt-5 text-center">
+<div class="container d-flex flex-column gap-5 mt-5 text-center">
 
-   {% if terror %}
-    <h3 class="mt-5 area-2">Terror 😱</h3>
-    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+    {% if terror %}
+    <h3 class="area-2">Terror 😱</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
         {% for livro in terror %}
         <div style="width: 400px;" class="card mb-4">
             <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
@@ -18,16 +28,41 @@
                 <h5 class="card-title area-1">{{ livro.titulo_terror }}</h5>
                 <p class="card-text">{{ livro.autor_terror }}</p>
                 <form action="{{ url_for('favoritar_terror', id=livro.id_terror) }}" method="post">
-                    <button class="btn btn-warning" type="submit">
-                        Remover dos Favoritos ⭐
+                    <button class="btn btn-danger" type="submit">
+                        <i class="bi bi-heart-fill"></i>
                     </button>
                 </form>
             </div>
         </div>
         {% endfor %}
     </div>
-       {% else %}
-        <p>Você ainda não favoritou nenhum livro.</p>
+    {% endif %}
+
+    {% if fantasia %}
+    <h3 class="area-2">Fantasia ✨</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        {% for livro in fantasia %}
+        <div style="width: 400px;" class="card mb-4">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
+                src="{{ livro.capa_fantasia }}" alt="Capa de {{ livro.titulo_fantasia }}">
+            <div class="card-body text-center">
+                <h5 class="card-title area-1">{{ livro.titulo_fantasia }}</h5>
+                <p class="card-text">{{ livro.autor_fantasia }}</p>
+                <form action="{{ url_for('favoritar_fantasia', id=livro.id_fantasia) }}" method="post">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not terror and not fantasia %}
+    <div class="alert alert-info" role="alert">
+        Você ainda não favoritou nenhum livro.
+    </div>
     {% endif %}
 
 </div>

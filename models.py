@@ -42,6 +42,7 @@ class Fantasia(db.Model):
     titulo_fantasia = db.Column(db.String(100), nullable=False)
     autor_fantasia = db.Column(db.String(100), nullable=False)
     capa_fantasia = db.Column(db.String(250), nullable=True)
+    favorito = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return "<Fantasia %r>" % self.titulo_fantasia
@@ -53,6 +54,5 @@ class Romance(db.Model):
     titulo_romance = db.Column(db.String(100), nullable=False)
     autor_romance = db.Column(db.String(100), nullable=False)
     capa_romance = db.Column(db.String(250), nullable=True)
-
     def __repr__(self):
         return "<Romance %r>" % self.titulo_romance

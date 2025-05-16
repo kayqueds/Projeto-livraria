@@ -54,9 +54,9 @@ with app.app_context():
     db.session.commit()
 
     livros_fantasia = [
-        Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg"),
-        Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg"),
-        Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg"),
+        Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg", favorito=False),
+        Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg", favorito=False),
+        Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg", favorito=False),
     ]
     db.session.bulk_save_objects(livros_fantasia)
     db.session.commit()
@@ -184,7 +184,9 @@ def favoritos():
         return redirect('/login')
 
     livros_terror = Terror.query.filter_by(favorito=True).all()
-    return render_template("favorito.html", terror=livros_terror, titulo='Livros Favoritos', icone='❤️')
+    livros_fantasia = Fantasia.query.filter_by(favorito=True).all()
+    return render_template("favorito.html", terror=livros_terror, titulo='Livros Favoritos', icone='❤️'
+    , fantasia=livros_fantasia)
 
 @app.route('/favoritar_terror/<int:id>', methods=['POST'])
 def favoritar_terror(id):
@@ -196,11 +198,14 @@ def favoritar_terror(id):
 
 
 
-
-
-
-
-
+@app.route('/favoritar_fantasia/<int:id>', methods=['POST'])
+def favoritar_fantasia(id):
+    livro = Fantasia.query.get_or_404(id)
+    livro.favorito = not livro.favorito
+    db.session.commit()
+    print(f'Livro {livro.titulo_fantasia} - favorito: {livro.favorito}')
+     # debug    
+    return redirect(url_for('fantasia'))
 
 
 @app.route('/editar_livro/<int:id>')
