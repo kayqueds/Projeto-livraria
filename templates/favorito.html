@@ -58,12 +58,34 @@
         {% endfor %}
     </div>
     {% endif %}
+    
+    {% if romance %}
+    <h3 class="area-2">Romance 💖</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        {% for livro in romance %}
+        <div style="width: 400px;" class="card mb-4">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
+                src="{{ livro.capa_romance }}" alt="Capa de {{ livro.titulo_romance }}">
+            <div class="card-body text-center">
+                <h5 class="card-title area-1">{{ livro.titulo_romance }}</h5>
+                <p class="card-text">{{ livro.autor_romance }}</p>
+                <form action="{{ url_for('favoritar_romance', id=livro.id_romance) }}" method="post">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}     
 
-    {% if not terror and not fantasia %}
+    {% if not (terror or fantasia or romance) %}
     <div class="alert alert-info" role="alert">
         Você ainda não favoritou nenhum livro.
     </div>
-    {% endif %}
+{% endif %}
+
 
 </div>
 {% endblock %}

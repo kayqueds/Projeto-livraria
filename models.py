@@ -54,5 +54,6 @@ class Romance(db.Model):
     titulo_romance = db.Column(db.String(100), nullable=False)
     autor_romance = db.Column(db.String(100), nullable=False)
     capa_romance = db.Column(db.String(250), nullable=True)
+    favorito = db.Column(db.Boolean, default=False)
     def __repr__(self):
         return "<Romance %r>" % self.titulo_romance

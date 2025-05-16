@@ -62,9 +62,9 @@ with app.app_context():
     db.session.commit()
 
     livros_romance = [
-        Romance(titulo_romance="Rei da ira ", autor_romance="Ana Huang", capa_romance="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1697407049i/199833928.jpg"),
-        Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://th.bing.com/th/id/OIP.SaEmOlYa5mX83MrHPFaMVwHaJ4?cb=iwc2&rs=1&pid=ImgDetMain"),
-        Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://cdn.record.com.br/wp-content/uploads/2021/08/25134546/21750-600x969.jpeg"),
+        Romance(titulo_romance="Rei da ira ", autor_romance="Ana Huang", capa_romance="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1697407049i/199833928.jpg", favorito=False),
+        Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://th.bing.com/th/id/OIP.SaEmOlYa5mX83MrHPFaMVwHaJ4?cb=iwc2&rs=1&pid=ImgDetMain", favorito=False),
+        Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://cdn.record.com.br/wp-content/uploads/2021/08/25134546/21750-600x969.jpeg", favorito=False),
     ]
     db.session.bulk_save_objects(livros_romance)
     db.session.commit()
@@ -185,8 +185,9 @@ def favoritos():
 
     livros_terror = Terror.query.filter_by(favorito=True).all()
     livros_fantasia = Fantasia.query.filter_by(favorito=True).all()
+    livros_romance = Romance.query.filter_by(favorito=True).all()
     return render_template("favorito.html", terror=livros_terror, titulo='Livros Favoritos', icone='❤️'
-    , fantasia=livros_fantasia)
+    , fantasia=livros_fantasia, romance=livros_romance)
 
 @app.route('/favoritar_terror/<int:id>', methods=['POST'])
 def favoritar_terror(id):
@@ -206,6 +207,14 @@ def favoritar_fantasia(id):
     print(f'Livro {livro.titulo_fantasia} - favorito: {livro.favorito}')
      # debug    
     return redirect(url_for('fantasia'))
+
+@app.route('/favoritar_romance/<int:id>', methods=['POST'])
+def favoritar_romance(id):
+    livro = Romance.query.get_or_404(id)
+    livro.favorito = not livro.favorito
+    db.session.commit()
+    print(f'Livro {livro.titulo_romance} - favorito: {livro.favorito}')
+    return redirect(url_for('romance'))
 
 
 @app.route('/editar_livro/<int:id>')

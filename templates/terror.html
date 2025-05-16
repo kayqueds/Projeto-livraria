@@ -5,36 +5,40 @@
 {% block content %}
 
 <h2 class="mb-3 mt-4 text-center area-1">{{ titulo }}</h2>
-<!--Botão de ver favoritos-->
+
+<!-- Botão de ver favoritos -->
 <div class="text-center">
     <a href="{{ url_for('favoritos') }}" target="_blank" class="btn btn-danger">Ver Favoritos</a>
 </div>    
+
 <div class="container d-flex flex-wrap justify-content-center gap-3 mt-5 text-center">
-
-
-    {% for livro in terror %}
-   
-    <div style="width: 400px;" class="card mb-5" style="width: 18rem;">
-        <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" src="{{ livro.capa_terror }}" class="card-img-top" alt="Capa de {{ livro.titulo_terror }}">
-        <div class="card-body">
-            <h5 class="card-title area-1">{{ livro.titulo_terror }}</h5>
-            <p class="card-text">{{ livro.autor_terror }}</p>
-           <form action="{{ url_for('favoritar_terror', id=livro.id_terror) }}" method="POST">
-    <button type="submit">
-        {% if livro.favorito %}
-            ★ Remover dos favoritos
-        {% else %}
-            ☆ Adicionar aos favoritos
-        {% endif %}
-    </button>
-</form>
-        </div>
-    </div>
-    {% endfor %}
+    {% if terror %}
+        {% for livro in terror %}
+            <div style="width: 400px;" class="card mb-5">
+                <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" 
+                     src="{{ livro.capa_terror }}" 
+                     class="card-img-top" 
+                     alt="Capa de {{ livro.titulo_terror }}">
+                <div class="card-body">
+                    <h5 class="card-title area-1">{{ livro.titulo_terror }}</h5>
+                    <p class="card-text">{{ livro.autor_terror }}</p>
+                    <form action="{{ url_for('favoritar_terror', id=livro.id_terror) }}" method="POST">
+                        <button type="submit">
+                            {% if livro.favorito %}
+                                ★ Remover dos favoritos
+                            {% else %}
+                                ☆ Adicionar aos favoritos
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
     {% else %}
-    <div class="alert alert-info" role="alert">
-        Você ainda não cadastrou nenhum livro.
-    </div>
+        <div class="alert alert-info" role="alert">
+            Você ainda não cadastrou nenhum livro.
+        </div>
     {% endif %}
 </div>
+
 {% endblock %}
