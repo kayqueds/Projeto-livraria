@@ -13,8 +13,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGDB}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGDB='mysql+mysqlconnector',
-        usuario='root',
-        senha='',
+        usuario='andre',
+        senha='1234',
         servidor='localhost',
         database='livraria'
     )
@@ -195,7 +195,7 @@ def favoritar_terror(id):
     livro.favorito = not livro.favorito
     db.session.commit()
     print(f'Livro {livro.titulo_terror} - favorito: {livro.favorito}')  # debug
-    return redirect(url_for('terror'))
+    return redirect(url_for('favoritos'))
 
 
 
@@ -206,7 +206,7 @@ def favoritar_fantasia(id):
     db.session.commit()
     print(f'Livro {livro.titulo_fantasia} - favorito: {livro.favorito}')
      # debug    
-    return redirect(url_for('fantasia'))
+    return redirect(url_for('favoritos'))
 
 @app.route('/favoritar_romance/<int:id>', methods=['POST'])
 def favoritar_romance(id):
@@ -214,7 +214,7 @@ def favoritar_romance(id):
     livro.favorito = not livro.favorito
     db.session.commit()
     print(f'Livro {livro.titulo_romance} - favorito: {livro.favorito}')
-    return redirect(url_for('romance'))
+    return redirect(url_for('favoritos'))
 
 
 @app.route('/editar_livro/<int:id>')
