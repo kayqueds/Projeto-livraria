@@ -152,11 +152,8 @@ function desfavoritar(){
                 title: "Sucesso!",
                 text: "Livro não favoritado!"
             });
-            window.location.href = "/favoritos";
         }
     });
 }
-
-
 
 

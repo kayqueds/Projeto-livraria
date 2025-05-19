@@ -6,6 +6,7 @@
     <link rel="shortcut icon" href="../static/assets/logo.jpg" type="image/x-icon">
     <title>{% block title %}Document{% endblock %}</title>
     {% block boot %}
+    <script src="https://kit.fontawesome.com/3b3ede6b66.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://unpkg.com/scrollreveal"></script>
@@ -69,11 +70,6 @@
                   </li>
                 </ul>
               </div>
-              <!--Barra de pesquisa-->
-              <form action="" style="margin-right: 20px;" class="d-flex" role="search">
-                <input name="txtNome" class="form-control me-2" type="search" placeholder="Procurar" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Pesquisar</button>
-              </form>
               <!-- Botão de tema -->
               <button id="alterarTema" class="btn btn-secondary" onclick="alterarTema()">
                 <i class="bi bi-sun"></i>
@@ -87,7 +83,21 @@
           
 
     {% block content %}
-   
+            
+      <footer class="footer mt-5">
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="area-1">Dream Quill</h2>
+              <img src="../static/assets/logo.jpg" alt="logo" class="img-fluid rounded-circle mb-3 circulo">
+              <p>© 2025 Todos os direitos reservados.</p>
+              <ul class="list-inline">
+                <li class="list-inline-item"><a href="https://github.com/kayqueds/Projeto-livraria"><i class="fa-brands fa-github fa-beat fa-lg"></i> Github</a></li>
+                <li class="list-inline-item"><a href="https://www.linkedin.com/in/kayqueestevao"><i class="fa-brands fa-linkedin fa-beat fa-lg"></i> LinkedIn</a></li>
+              </ul>
+            </div>
+          </div>
+      </footer>
     {% endblock %}
 
 

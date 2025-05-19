@@ -3,12 +3,10 @@
     margin: 0;
     box-sizing: border-box;
 }
-
 /* estlo modo escuro e modo claro */
 :root[data-bs-theme="light"] .navbar {
   transition: 0.4s ease-in;
 }
-
 :root[data-bs-theme="light"] .navbar .nav-link,
 :root[data-bs-theme="light"] .navbar .navbar-brand {
   color: #222 !important;
@@ -127,11 +125,11 @@ body{
   }
   
   section.module.parallax-2{
-    background-image: url("https://images.unsplash.com/photo-1473181488821-2d23949a045a?dpr=1&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=");
+    background-image: url("https://th.bing.com/th/id/R.225a6fbbcbeb2356b2429187ee8cae90?rik=j8QKNozqeCu6FA&pid=ImgRaw&r=0")
   }
   
   section.module.parallax-3{
-    background-image: url("https://images.unsplash.com/photo-1472162314594-eca3c3d90df1?dpr=1&auto=format&fit=crop&w=1500&h=1001&q=80&cs=tinysrgb&crop=");
+    background-image: url("https://wallpaperaccess.com/full/2289563.jpg");
   }
   
   section.module.parallax h1{
@@ -237,9 +235,14 @@ body{
   font-size: 1.2rem;
   
 }
-
-
-
+.conta a {
+  text-decoration: none;
+}
+.conta a:hover{
+  color: orange;
+  text-decoration: underline;
+  transition: 0.3s ease-out;
+}
 .navbar-brand:hover, .navbar-link:hover, .cabecalho a:hover {
   transition: 0.3s ease-out;
   text-decoration: underline;
@@ -288,7 +291,6 @@ table{
   }
 }
 
-
 .paginaNaoExiste{
   max-width: 800px;
   animation: mover;
@@ -309,4 +311,68 @@ table{
 
 .icones{
   margin-left: 5px;
+}
+
+
+.paragrafo{
+  font-size: 1.1rem;
+}
+
+
+/* RODAPE */
+footer{
+  background-color: var(--cor_primaria);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  margin-top: 30px;
+  border-top: 2px solid var(--cor_secundaria);
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+footer a:hover {
+  background-color: #201f1f;
+  transition: all 0.3s ease;
+  padding: 0% 10px;
+  border-radius: 5px;
+}
+
+@keyframes brilhar {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    transform: scale(1);
+  }
+}
+
+.circulo{
+  width: 60px;
+  height: 60px;
+  animation: brilhar;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  background-color: var(--cor_primaria);
 }

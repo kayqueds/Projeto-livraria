@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from models import db, Usuarios, Livros, Terror, Fantasia, Romance  # importa as classes do models.py
 import os
+from datetime import date
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -70,10 +71,11 @@ with app.app_context():
     db.session.commit()
 
 # Rotas da aplicação
+agora = date.today()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('index.html', titulo='Página inicial')
+    return render_template('index.html', titulo='Página inicial', ano=agora.year)
 
 @app.route('/listaUsuarios')
 def listaUsuarios():
