@@ -235,9 +235,14 @@ body{
   font-size: 1.2rem;
   
 }
-
-
-
+.conta a {
+  text-decoration: none;
+}
+.conta a:hover{
+  color: orange;
+  text-decoration: underline;
+  transition: 0.3s ease-out;
+}
 .navbar-brand:hover, .navbar-link:hover, .cabecalho a:hover {
   transition: 0.3s ease-out;
   text-decoration: underline;
