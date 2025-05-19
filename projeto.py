@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from models import db, Usuarios, Livros, Terror, Fantasia, Romance  # importa as classes do models.py
 import os
+from datetime import date
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -13,8 +14,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGDB}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGDB='mysql+mysqlconnector',
-        usuario='andre',
-        senha='1234',
+        usuario='root',
+        senha='',
         servidor='localhost',
         database='livraria'
     )
@@ -70,10 +71,11 @@ with app.app_context():
     db.session.commit()
 
 # Rotas da aplicação
+agora = date.today()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('index.html', titulo='Página inicial')
+    return render_template('index.html', titulo='Página inicial', ano=agora.year)
 
 @app.route('/listaUsuarios')
 def listaUsuarios():
@@ -195,7 +197,7 @@ def favoritar_terror(id):
     livro.favorito = not livro.favorito
     db.session.commit()
     print(f'Livro {livro.titulo_terror} - favorito: {livro.favorito}')  # debug
-    return redirect(url_for('favoritos'))
+    return redirect(url_for('terror'))
 
 
 
@@ -206,7 +208,7 @@ def favoritar_fantasia(id):
     db.session.commit()
     print(f'Livro {livro.titulo_fantasia} - favorito: {livro.favorito}')
      # debug    
-    return redirect(url_for('favoritos'))
+    return redirect(url_for('fantasia'))
 
 @app.route('/favoritar_romance/<int:id>', methods=['POST'])
 def favoritar_romance(id):
@@ -214,7 +216,7 @@ def favoritar_romance(id):
     livro.favorito = not livro.favorito
     db.session.commit()
     print(f'Livro {livro.titulo_romance} - favorito: {livro.favorito}')
-    return redirect(url_for('favoritos'))
+    return redirect(url_for('romance'))
 
 
 @app.route('/editar_livro/<int:id>')
