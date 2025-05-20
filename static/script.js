@@ -37,6 +37,26 @@ function confirmarExclusao(event) {
         }
     });
 }
+function confirmarDownload(event) {
+    event.preventDefault();
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você deseja baixar este livro?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, baixar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: `Livro baixado com sucesso!`
+            });
+            window.location.href = event.target.href;
+        }
+    });
+}
 
 // função para editar Livro
 function confirmarEdicao(event) {
@@ -137,23 +157,11 @@ olho.addEventListener("click", function() {
 
 // adicionar favoritos
 function desfavoritar(){
-   
-    Swal.fire({
-        title: 'Tem certeza?',
-        text: "Você deseja desfavoritar!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Desfavoritar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
             Swal.fire({
                 icon: "success",
                 title: "Sucesso!",
-                text: "Livro não favoritado!"
+                text: "Livro  desfavoritado!"
             });
         }
-    });
-}
 
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, flash, url_for
+from flask import Flask, render_template, request, redirect, session, flash, url_for, send_from_directory
 from models import db, Usuarios, Livros, Terror, Fantasia, Romance  # importa as classes do models.py
 import os
 from datetime import date
@@ -56,7 +56,7 @@ with app.app_context():
 
     livros_fantasia = [
         Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg", favorito=False),
-        Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg", favorito=False),
+        Fantasia(titulo_fantasia="O Senhor dos Aneis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg", favorito=False),
         Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg", favorito=False),
     ]
     db.session.bulk_save_objects(livros_fantasia)
@@ -157,6 +157,12 @@ def cadastroLivros():
 
     return render_template('cadastrarLivro.html', titulo='Cadastro de Livros', icone='📚', generos=generos)
 
+
+@app.route('/baixar/<path:titulo>')
+def baixar_livro(titulo):
+    nome_arquivo = secure_filename(f"{titulo.lower().replace(' ', '_')}.pdf")
+    pasta_livros = os.path.join(app.root_path, 'static', 'livros')
+    return send_from_directory(pasta_livros, nome_arquivo, as_attachment=True)
 
 
 @app.route('/livros')

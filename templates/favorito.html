@@ -32,7 +32,11 @@
                         <i class="bi bi-heart-fill"></i>
                     </button>
                 </form>
+                <!--Baixar livro-->
             </div>
+              <a onclick="confirmarDownload(event)" href="{{ url_for('baixar_livro', titulo=livro.titulo_terror) }}" class="btn btn-primary">
+                <i class="bi bi-download"></i>
+                </a>
         </div>
         {% endfor %}
     </div>
@@ -54,6 +58,9 @@
                     </button>
                 </form>
             </div>
+              <a onclick="confirmarDownload(event)" href="{{ url_for('baixar_livro', titulo=livro.titulo_fantasia) }}" class="btn btn-primary">
+                <i class="bi bi-download"></i>
+                </a>
         </div>
         {% endfor %}
     </div>
