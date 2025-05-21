@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var loadingSpinner = document.getElementById('loading-spinner');
+    var livro = document.getElementById('livro');
     var content = document.getElementById('conteudo');
 
     setTimeout(function() {
-        loadingSpinner.style.display = 'none';
+        livro.style.display = 'none';
         content.style.display = 'block';
 
         // animação ScrollReveal
@@ -32,6 +32,26 @@ function confirmarExclusao(event) {
                 icon: "success",
                 title: "Sucesso!",
                 text: `Livro excluído com sucesso.`
+            });
+            window.location.href = event.target.href;
+        }
+    });
+}
+function confirmarDownload(event) {
+    event.preventDefault();
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você deseja baixar este livro?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, baixar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: `Livro baixado com sucesso!`
             });
             window.location.href = event.target.href;
         }
@@ -137,23 +157,11 @@ olho.addEventListener("click", function() {
 
 // adicionar favoritos
 function desfavoritar(){
-   
-    Swal.fire({
-        title: 'Tem certeza?',
-        text: "Você deseja desfavoritar!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Desfavoritar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
             Swal.fire({
                 icon: "success",
                 title: "Sucesso!",
-                text: "Livro não favoritado!"
+                text: "Livro  desfavoritado!"
             });
         }
-    });
-}
 
 

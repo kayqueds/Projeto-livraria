@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, session, flash, url_for
-from models import db, Usuarios, Livros, Terror, Fantasia, Romance  # importa as classes do models.py
+from flask import Flask, render_template, request, redirect, session, flash, url_for, send_from_directory
+from models import db, Usuarios, Livros, Terror, Fantasia, Romance, Ficcao  # importa as classes do models.py
 import os
 from datetime import date
 from werkzeug.utils import secure_filename
@@ -39,6 +39,10 @@ def romance():
     livros_romance = Romance.query.limit(3).all()
     return render_template('romance.html', titulo='Livros de Romance', romance=livros_romance)
 
+@app.route('/ficcao')
+def ficcao():
+    livros_ficcao = Ficcao.query.limit(3).all()
+    return render_template('ficcao.html', titulo='Livros de Ficção', ficcao=livros_ficcao)
 # Criação das tabelas no banco de dados (caso ainda não existam)
 with app.app_context():
     db.create_all()
@@ -63,11 +67,20 @@ with app.app_context():
     db.session.commit()
 
     livros_romance = [
-        Romance(titulo_romance="Rei da ira ", autor_romance="Ana Huang", capa_romance="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1697407049i/199833928.jpg", favorito=False),
-        Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://th.bing.com/th/id/OIP.SaEmOlYa5mX83MrHPFaMVwHaJ4?cb=iwc2&rs=1&pid=ImgDetMain", favorito=False),
-        Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://cdn.record.com.br/wp-content/uploads/2021/08/25134546/21750-600x969.jpeg", favorito=False),
+        Romance(titulo_romance=" A cinco passos de você", autor_romance= "Lippincott Rachael", capa_romance="https://a-static.mlcdn.com.br/1500x1500/livro-a-cinco-passos-de-voce-rachael-lippincott/cliquebooks/566487-1/95de66714818c058f07977e70c8d71e1.jpeg", favorito=False),
+        Romance(titulo_romance="É assim que acaba", autor_romance="Colleen Houver", capa_romance="https://m.media-amazon.com/images/I/9112cWOV-OL._UF894,1000_QL80_.jpg", favorito=False),
+        Romance(titulo_romance="Até o verão terminar", autor_romance="Collen Houver", capa_romance="https://images.thalia.media/-/BF750-750/d9e5962e334d4dada918c1e1067e652d/ate-o-verao-terminar-epub-3-colleen-hoover.jpeg", favorito=False),
     ]
     db.session.bulk_save_objects(livros_romance)
+    db.session.commit()
+
+    livros_ficcao= [
+        Ficcao(titulo_ficcao="Fahrenheit 451", autor_ficcao="Ray Braobury", capa_ficcao="https://livrariapublica.com.br/capa/fahrenheit-451-edicao-especial-ray-bradbury-pdf-B08J9GHH12.webp"),
+        Ficcao(titulo_ficcao="Mickey 7", autor_ficcao="Edward Ashton", capa_ficcao="https://upload.wikimedia.org/wikipedia/en/c/cc/Mickey7_book_cover.jpg"),
+        Ficcao(titulo_ficcao="A guerra dos mundos", autor_ficcao="H. G. Wells", capa_ficcao="https://th.bing.com/th/id/OIP.MT9pZnpQt-7FI-BMGovgqAHaLa?cb=iwc2&rs=1&pid=ImgDetMain"),
+    ]
+
+    db.session.bulk_save_objects(livros_ficcao)
     db.session.commit()
 
 # Rotas da aplicação
@@ -106,9 +119,7 @@ def logout():
 def autenticar_usuario():
     email = request.form.get('txtLogin', '').strip()
     senha = request.form.get('txtSenha', '').strip()
-
     usuario = Usuarios.query.filter_by(email_usuario=email).first()
-
     if usuario and usuario.senha_usuario == senha:
         session['usuario_logado'] = usuario.email_usuario
         flash(f'Login realizado com sucesso, olá {usuario.nome_usuario}', 'success')
@@ -157,6 +168,12 @@ def cadastroLivros():
 
     return render_template('cadastrarLivro.html', titulo='Cadastro de Livros', icone='📚', generos=generos)
 
+# baixando livros na tela de favoritos
+@app.route('/baixar/<path:titulo>')
+def baixar_livro(titulo):
+    nome_arquivo = secure_filename(f"{titulo.lower().replace(' ', '_')}.pdf")
+    pasta_livros = os.path.join(app.root_path, 'static', 'livros')
+    return send_from_directory(pasta_livros, nome_arquivo, as_attachment=True)
 
 
 @app.route('/livros')
@@ -188,8 +205,9 @@ def favoritos():
     livros_terror = Terror.query.filter_by(favorito=True).all()
     livros_fantasia = Fantasia.query.filter_by(favorito=True).all()
     livros_romance = Romance.query.filter_by(favorito=True).all()
+    livros_ficcao = Ficcao.query.filter_by(favorito=True).all()
     return render_template("favorito.html", terror=livros_terror, titulo='Livros Favoritos', icone='❤️'
-    , fantasia=livros_fantasia, romance=livros_romance)
+    , fantasia=livros_fantasia, romance=livros_romance, ficcao=livros_ficcao)
 
 @app.route('/favoritar_terror/<int:id>', methods=['POST'])
 def favoritar_terror(id):
@@ -217,6 +235,14 @@ def favoritar_romance(id):
     db.session.commit()
     print(f'Livro {livro.titulo_romance} - favorito: {livro.favorito}')
     return redirect(url_for('romance'))
+
+@app.route('/favoritar_ficcao/<int:id>', methods=['POST'])
+def favoritar_ficcao(id):
+    livro = Ficcao.query.get_or_404(id)
+    livro.favorito = not livro.favorito
+    db.session.commit()
+    print(f'Livro {livro.titulo_ficcao} - favorito: {livro.favorito}')
+    return redirect(url_for('ficcao'))
 
 
 @app.route('/editar_livro/<int:id>')
