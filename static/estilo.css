@@ -132,6 +132,97 @@ body{
     background-image: url("https://wallpaperaccess.com/full/2289563.jpg");
   }
   
+   .backgroundImage{
+    background-image: url("https://static.vecteezy.com/ti/fotos-gratis/p2/10331035-foco-selecionado-vazio-marrom-mesa-de-madeira-e-biblioteca-ou-livraria-desfoque-fundo-com-imagem-bokeh-para-suamontagem-ou-exibicao-do-produto-gratis-foto.jpg");
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh !important;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+  }
+  .backgroundImageFantasia-1{
+    background-image: url("https://img.freepik.com/fotos-gratis/dia-internacional-da-educacao-cena-com-estilo-de-fantasia_23-2151040337.jpg");
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 60vh !important;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+  }
+  /* Estilo geral do carrossel */
+.carousel {
+  margin: 40px auto;
+  max-width: 900px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagens responsivas e com transição suave */
+.carousel-item img {
+  object-fit: cover;
+  height: 400px;
+  transition: transform 0.5s ease;
+}
+
+/* Indicadores personalizados */
+.carousel-indicators button {
+  background-color: #555;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  margin: 6px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.carousel-indicators .active {
+  background-color: #007bff;
+  opacity: 1;
+}
+
+/* Botões de navegação */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+/* Hover para dar um feedback visual */
+.carousel-item:hover img {
+  transform: scale(1.02);
+}
+
+/* Visibilidade para leitores de tela */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
   section.module.parallax h1{
     color: #FFF;
     text-align: center;
@@ -202,6 +293,14 @@ body{
 }
 
 #carouselExampleIndicators{
+    margin-top: -15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 0.5px rgba(0, 0, 0, 0.2);
+    background-color: var(--cor_primaria);  
+}
+#carouselExampleIndicatorsFantasia{
+    width:100% ;
     margin-top: -15px;
     margin-bottom: 20px;
     border-radius: 5px;
