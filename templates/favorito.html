@@ -82,12 +82,39 @@
                     </button>
                 </form>
             </div>
+            <a onclick="confirmarDownload(event)" href="{{ url_for('baixar_livro', titulo=livro.titulo_romance) }}" class="btn btn-primary">
+                <i class="bi bi-download"></i>
+                </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}  
+
+    {% if ficcao %}
+    <h3 class="area-1">Ficção <i class="fa-solid fa-robot fa-sm fa-bounce" style="color: #6b6767;"></i></h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        {% for livro in ficcao %}
+        <div style="width: 400px;" class="card mb-4">
+            <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;"
+                src="{{ livro.capa_ficcao }}" alt="Capa de {{ livro.titulo_ficcao }}">
+            <div class="card-body text-center">
+                <h5 class="card-title area-1">{{ livro.titulo_ficcao }}</h5>
+                <p class="card-text">{{ livro.autor_ficcao }}</p>
+                <form action="{{ url_for('favoritar_ficcao', id=livro.id_ficcao) }}" method="post">
+                    <button onclick="desfavoritar(event)" class="btn btn-danger" type="submit">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+                </form>
+            </div>
+            <a onclick="confirmarDownload(event)" href="{{ url_for('baixar_livro', titulo=livro.titulo_ficcao) }}" class="btn btn-primary">
+                <i class="bi bi-download"></i>
+                </a>
         </div>
         {% endfor %}
     </div>
     {% endif %}     
 
-    {% if not (terror or fantasia or romance) %}
+    {% if not (terror or fantasia or romance or ficcao) %}
     <div class="alert alert-info" role="alert">
         Você ainda não favoritou nenhum livro.
     </div>

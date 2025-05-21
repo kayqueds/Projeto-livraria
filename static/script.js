@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var loadingSpinner = document.getElementById('loading-spinner');
+    var livro = document.getElementById('livro');
     var content = document.getElementById('conteudo');
 
     setTimeout(function() {
-        loadingSpinner.style.display = 'none';
+        livro.style.display = 'none';
         content.style.display = 'block';
 
         // animação ScrollReveal

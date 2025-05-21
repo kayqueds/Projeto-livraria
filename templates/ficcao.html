@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-3 mt-4 text-center area-1">{{ titulo }}</h2>
+
+<!-- Botão de ver favoritos -->
+<div class="text-center">
+    <a href="{{ url_for('favoritos') }}" class="btn btn-danger">Ver Favoritos</a>
+</div>    
+
+<div class="container d-flex flex-wrap justify-content-center gap-3 mt-5 text-center">
+    {% if ficcao %}
+        {% for livro in ficcao %}
+            <div style="width: 400px;" class="card mb-5">
+                <img style="width: 90%; height: 50vh; border-radius: 8px; margin: auto; margin-top: 10px;" 
+                     src="{{ livro.capa_ficcao}}" 
+                     class="card-img-top" 
+                     alt="Capa de {{ livro.titulo_ficcao}}">
+                <div class="card-body">
+                    <h5 class="card-title area-1">{{ livro.titulo_ficcao }}</h5>
+                    <p class="card-text">{{ livro.autor_ficcao }}</p>
+                    <form action="{{ url_for('favoritar_ficcao', id=livro.id_ficcao) }}" method="POST">
+                        <button type="submit">
+                            {% if livro.favorito %}
+                                ★ Remover dos favoritos
+                            {% else %}
+                                ☆ Adicionar aos favoritos
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Você ainda não cadastrou nenhum livro.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
