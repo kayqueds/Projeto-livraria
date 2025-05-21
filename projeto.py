@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
         usuario='root',
         senha='',
         servidor='localhost',
-        database='livro'
+        database='livraria'
     )
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
