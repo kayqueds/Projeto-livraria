@@ -38,7 +38,7 @@
 :root{
   --cor_primaria: #9AA6B2;
   --cor_secundaria: #F8FAFC;
-  --cor_fundo: #BCCCDC;
+  --cor_fundo: #bcccdc;
 }
 
 body{
@@ -133,7 +133,7 @@ body{
   }
   
    .backgroundImage{
-    background-image: url("https://static.vecteezy.com/ti/fotos-gratis/p2/10331035-foco-selecionado-vazio-marrom-mesa-de-madeira-e-biblioteca-ou-livraria-desfoque-fundo-com-imagem-bokeh-para-suamontagem-ou-exibicao-do-produto-gratis-foto.jpg");
+    background-image: url("assets/fundoLogin.jpg");
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -149,28 +149,13 @@ body{
     -moz-background-size: cover;
     -o-background-size: cover;
   }
-  .backgroundImageFantasia-1{
-    background-image: url("https://img.freepik.com/fotos-gratis/dia-internacional-da-educacao-cena-com-estilo-de-fantasia_23-2151040337.jpg");
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 60vh !important;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-  }
+ 
   /* Estilo geral do carrossel */
 .carousel {
   margin: 40px auto;
   max-width: 900px;
   border-radius: 10px;
+  border: 8px groove black;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
