@@ -11,6 +11,8 @@ app.secret_key = "livraria"
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
+
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGDB}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGDB='mysql+mysqlconnector',
@@ -59,7 +61,7 @@ with app.app_context():
     db.session.commit()
 
     livros_fantasia = [
-        Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://m.media-amazon.com/images/I/51epGsQvSaL._SY445_SX342_.jpg", favorito=False),
+        Fantasia(titulo_fantasia="O Labirinto do Fauno", autor_fantasia="Guillermo del Toro", capa_fantasia="https://th.bing.com/th/id/R.55947da1b2396a1f9a5619b421b0c01a?rik=SSWAZu%2bz5E8lcA&pid=ImgRaw&r=0", favorito=False),
         Fantasia(titulo_fantasia="O Senhor dos Anéis", autor_fantasia="J.R.R. Tolkien", capa_fantasia="https://m.media-amazon.com/images/I/71+4uDgt8JL._AC_UF1000,1000_QL80_.jpg", favorito=False),
         Fantasia(titulo_fantasia="Harry Potter e a Pedra Filosofal", autor_fantasia="J.K. Rowling", capa_fantasia="https://m.media-amazon.com/images/I/51UoqRAxwEL.jpg", favorito=False),
     ]

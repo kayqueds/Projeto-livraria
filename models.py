@@ -15,7 +15,7 @@ class Livros(db.Model):
     id_livro = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome_livro = db.Column(db.String(100), nullable=False)
     autor_livro = db.Column(db.String(100), nullable=False)
-    genero_livro = db.Column(db.String, nullable=False)
+    genero_livro = db.Column(db.String(100), nullable=False)
     ano_livro = db.Column(db.Integer, nullable=False)
     descricao_livro = db.Column(db.Text)
     imagem_livro = db.Column(db.String(300), nullable=True)
